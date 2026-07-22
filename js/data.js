@@ -58,7 +58,12 @@ var KW = {
   reviews: [
     {n:"Amine B.",c:"Algiers",t:"The chrome hoodie is insane in person — reflects like crazy under flash. Delivery to Algiers took 2 days, COD as promised.",g1:"#5FE4FF",g2:"#8B7BFF"},
     {n:"Yasmine K.",c:"Oran",t:"Finally a DZ brand that gets Y2K right. The baby tee fit is perfect and the quality is way above the price.",g1:"#FF2D8B",g2:"#8B7BFF"},
-    {n:"Riad M.",c:"Constantine",t:"Ordered the cargo pants and techwear vest. Stitching is clean, sizing accurate. Already waiting on the next drop.",g1:"#22C7F5",g2:"#0B6F97"}
+    {n:"Riad M.",c:"Constantine",t:"Ordered the cargo pants and techwear vest. Stitching is clean, sizing accurate. Already waiting on the next drop.",g1:"#22C7F5",g2:"#0B6F97"},
+    {n:"Lina Z.",c:"Blida",t:"Stop desk pickup was easy and the windbreaker actually packs into its own pocket. Obsessed with the chrome zips.",g1:"#8B7BFF",g2:"#22C7F5"},
+    {n:"Sofiane H.",c:"Sétif",t:"Glacier denim stacks exactly like the photos. Heavy fabric, zero stretch — real 2003 energy. Worth every dinar.",g1:"#9AA6B4",g2:"#5FE4FF"},
+    {n:"Meriem A.",c:"Annaba",t:"They called before shipping like they said. Beanie + baby tee combo is my whole personality now.",g1:"#CCFF00",g2:"#22C7F5"},
+    {n:"Walid T.",c:"Tlemcen",t:"Exchange was painless — sized up on the hoodie and the new one shipped free in three days. Rare service in DZ.",g1:"#FF7A1A",g2:"#FF2D8B"},
+    {n:"Kenza D.",c:"Béjaïa",t:"The reflective print stopped my whole timeline when the flash hit. KOLDWAVE is not playing fair.",g1:"#5FE4FF",g2:"#FF2D8B"}
   ],
   /* Yalidine Express (Guepex) grid, ship-from Ras El Oued, Bordj Bou Arreridj.
      Per wilaya: [home delivery DA, stop desk DA]; null entry = not deliverable, null desk = no agency.

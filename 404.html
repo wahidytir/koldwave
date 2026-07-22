@@ -16,6 +16,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="twitter:card" content="summary" />
 <script>document.documentElement.className = document.documentElement.className.replace('no-js','js');</script>
+<script>
+/* GitHub Pages serves this file for ANY missing path (e.g. /koldwave/foo/bar),
+   so relative asset URLs would break for nested paths. Anchor them to the site
+   root: on *.github.io project pages that's the first path segment; elsewhere "/".
+   Update this if the site moves to a custom domain. */
+(function(){
+  var seg = location.pathname.split('/')[1];
+  var root = (/\.github\.io$/.test(location.hostname) && seg) ? '/'+seg+'/' : '/';
+  document.write('<base href="'+root+'">');
+})();
+</script>
 <link rel="icon" type="image/png" href="assets/favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
