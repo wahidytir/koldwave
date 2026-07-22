@@ -10,6 +10,7 @@ A fully static, dependency-free storefront. No build step, no framework — just
 |---|---|
 | `index.html` | Home — hero, categories, featured drop, piece of the week |
 | `shop.html` | Full product grid with category filters (`?cat=`) and search (`?q=`) |
+| `product-<slug>.html` | 8 product detail pages — gallery, description, sizes, add to bag / buy now, spec accordions, related pieces |
 | `lookbook.html` | SS26 editorial lookbook |
 | `about.html` | Brand story, stats, customer reviews |
 | `contact.html` | Contact details + message form |

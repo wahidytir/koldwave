@@ -448,3 +448,26 @@ a,button{-webkit-tap-highlight-color:rgba(0,0,0,0)}
 a.cat{color:inherit}
 .view-all{display:flex; justify-content:center; margin-top:44px}
 .page-body .eyebrow{display:block; margin-bottom:12px}
+
+/* ---------- Product pages ---------- */
+.card-link{position:absolute; inset:0; z-index:1}
+.pm .pm-name{pointer-events:none}
+.card-name a{color:inherit}
+.card-name a:hover{color:var(--ice)}
+.crumbs{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px}
+.crumbs a{color:var(--muted)} .crumbs a:hover{color:var(--ice)}
+.crumbs .sep{color:var(--muted2)}
+.crumbs .cur{color:var(--fg)}
+.pdp{padding:clamp(36px,5vw,64px) 0 clamp(56px,7vw,90px)}
+.pdp-badge{display:inline-block; margin-bottom:14px; transform:rotate(-2deg)}
+.meta-list{border-top:1px solid var(--line); margin-top:26px}
+details.meta{border-bottom:1px solid var(--line)}
+details.meta summary{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; padding:15px 0; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; color:var(--fg)}
+details.meta summary::-webkit-details-marker{display:none}
+details.meta summary::after{content:"+"; font-size:16px; color:var(--ice); flex:none; margin-left:12px}
+details.meta[open] summary::after{content:"−"}
+details.meta .mb{padding:0 0 16px; color:var(--muted); font-size:14px; max-width:520px; line-height:1.6}
+details.meta .mb ul{margin:0 0 0 18px}
+details.meta .mb li{margin-bottom:6px}
+details.meta .mb a{text-decoration:underline; text-underline-offset:3px}
+.related-pad{padding:0 0 clamp(64px,9vw,120px)}

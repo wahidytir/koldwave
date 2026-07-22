@@ -12,6 +12,7 @@
   };
   var money = function(n){ return n.toLocaleString('en-US').replace(/,/g,' ') + ' DA'; };
   var HANG = '<svg class="pm-hang" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 3a2 2 0 0 0-1 3.73c.55.32.9.79.9 1.27 0 .6-.5 1.05-1.2 1.45L4 14.2c-.7.4-1.2.95-1.2 1.75C2.8 17 3.7 18 5 18h14c1.3 0 2.2-1 2.2-2.05 0-.8-.5-1.35-1.2-1.75l-6.7-3.75"/></svg>';
+  var artSVG = function(p,cls){ var s=(window.KW&&KW.art)?KW.art[p.art]:null; return s ? s.replace('<svg','<svg class="'+cls+'"') : HANG; };
 
   var $ = function(s,c){ return (c||document).querySelector(s); };
   var $$ = function(s,c){ return [].slice.call((c||document).querySelectorAll(s)); };
@@ -50,8 +51,9 @@
     });
   }
   function drawHang(){
-    var path=document.querySelector('#spotMain .hang path'); if(!path||path.__drawn) return; path.__drawn=true;
-    anime({targets:path, strokeDashoffset:[anime.setDashoffset,0], duration:1500, delay:250, easing:'easeInOutQuad'});
+    var paths=document.querySelectorAll('#spotMain .hang path');
+    if(!paths.length||paths[0].__drawn) return; paths[0].__drawn=true;
+    anime({targets:paths, strokeDashoffset:[anime.setDashoffset,0], duration:1100, delay:anime.stagger(140,{start:250}), easing:'easeInOutQuad'});
   }
 
   // ---------- Marquees ----------
@@ -155,14 +157,15 @@
     var priceOld = p.old ? '<span class="old">'+money(p.old)+'</span>' : '';
     return '<article class="card rv" data-anim="card" data-cat="'+p.cat+'">'+
       '<div class="pm" style="--g1:'+p.g1+';--g2:'+p.g2+'">'+
-        '<span class="pm-num anton">'+num+'</span>'+HANG+
+        '<a class="card-link" href="product-'+p.slug+'.html" aria-label="View '+p.name+'"></a>'+
+        '<span class="pm-num anton">'+num+'</span>'+artSVG(p,'pm-hang')+
         '<button class="wish'+(wished[p.id]?' on':'')+'" data-id="'+p.id+'" aria-pressed="'+(wished[p.id]?'true':'false')+'" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5.5 6 5.5c2 0 3.2 1.2 4 2.3.8-1.1 2-2.3 4-2.3 3.5 0 5 3.5 3.5 6.5C19 16.5 12 21 12 21Z"/></svg></button>'+
         badge+
         '<span class="pm-name anton">'+p.name+'</span>'+
       '</div>'+
       '<div class="card-body">'+
         '<div class="card-cat">'+p.cat+'</div>'+
-        '<div class="card-name">'+p.name+'</div>'+
+        '<div class="card-name"><a href="product-'+p.slug+'.html">'+p.name+'</a></div>'+
         '<div class="card-foot">'+
           '<div class="price">'+priceOld+money(p.price)+'</div>'+
           '<button class="add" data-id="'+p.id+'" aria-label="Add '+p.name+' to bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg></button>'+
@@ -213,7 +216,14 @@
     renderCards(res);
     toast(toks.length ? res.length+' result'+(res.length===1?'':'s')+' for “'+q+'”' : 'Showing the full drop');
   }
-  if(grid){
+  if(grid && grid.dataset.related){
+    // "You might also like" on product pages: same category first, padded with the rest
+    var relId=parseInt(grid.dataset.related,10);
+    var relP=products.filter(function(x){return x.id===relId;})[0];
+    var rel=products.filter(function(x){return relP && x.id!==relId && x.cat===relP.cat;});
+    products.forEach(function(x){ if(rel.length<4 && x.id!==relId && rel.indexOf(x)<0) rel.push(x); });
+    renderCards(rel);
+  } else if(grid){
     var params=new URLSearchParams(window.location.search);
     var pCat=params.get('cat'), pQ=params.get('q');
     var validCat = pCat && cats.some(function(c){return c[0]===pCat && pCat!=='all';});
@@ -420,6 +430,35 @@
     $('#ctName').value=''; $('#ctPhone').value=''; $('#ctMsg').value='';
     toast('Message sent ✦ We\'ll get back to you');
   });
+
+  // ---------- Product page ----------
+  var pdp=$('#pdpRoot');
+  if(pdp){
+    var pdpId=parseInt(pdp.dataset.productId,10);
+    var pdpP=products.filter(function(x){return x.id===pdpId;})[0];
+    if(pdpP){
+      var pdpSize=(pdpP.sizes&&pdpP.sizes.indexOf('M')>-1)?'M':((pdpP.sizes&&pdpP.sizes[0])||'M');
+      var pdpQty=1;
+      $$('#pdpSizes .size').forEach(function(b){
+        b.addEventListener('click',function(){ $$('#pdpSizes .size').forEach(function(x){x.classList.remove('active');}); b.classList.add('active'); pdpSize=b.textContent; });
+      });
+      var pdpQ=$('#pdpQty');
+      $('#pdpMinus').addEventListener('click',function(){ pdpQty=Math.max(1,pdpQty-1); pdpQ.value=pdpQty; });
+      $('#pdpPlus').addEventListener('click',function(){ pdpQty++; pdpQ.value=pdpQty; });
+      pdpQ.addEventListener('input',function(){ var v=parseInt(this.value)||1; pdpQty=Math.max(1,v); this.value=pdpQty; });
+      $('#pdpAdd').addEventListener('click',function(){ addToCart(pdpP,pdpSize,pdpQty,this); openCart(); });
+      $('#pdpBuy').addEventListener('click',function(){ addToCart(pdpP,pdpSize,pdpQty,this); window.location.href='checkout.html'; });
+      var pdpMain=$('#pdpMain');
+      $$('#pdpThumbs .thumb').forEach(function(t){
+        t.addEventListener('click',function(){
+          $$('#pdpThumbs .thumb').forEach(function(x){x.classList.remove('active');}); t.classList.add('active');
+          pdpMain.style.setProperty('--g1',t.dataset.g1); pdpMain.style.setProperty('--g2',t.dataset.g2);
+          if(ANIM) anime({targets:'#pdpMain .hang', scale:[.9,1], rotate:[-4,0], duration:420, easing:'easeOutBack'});
+        });
+      });
+      if(ANIM) anime({targets:'#pdpMain .hang path', strokeDashoffset:[anime.setDashoffset,0], duration:1000, delay:anime.stagger(120,{start:200}), easing:'easeInOutQuad'});
+    }
+  }
 
   // ---------- Checkout page — wilaya + commune + stop desk / home door ----------
   var coBox=$('#coContent');
